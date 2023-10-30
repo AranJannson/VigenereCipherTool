@@ -10,9 +10,9 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
 
-        VigenereDecryptNoKey viegenere = new VigenereDecryptNoKey();
+        VigenereDecryptNoKey vigenere = new VigenereDecryptNoKey();
 
-        viegenere.decryptNoKey(c1,c2);
+        vigenere.decryptNoKey(c1,c2);
 
     }
 
