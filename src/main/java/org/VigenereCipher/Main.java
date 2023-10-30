@@ -1,4 +1,4 @@
-package org.example;
+package org.VigenereCipher;
 
 import java.io.FileNotFoundException;
 
