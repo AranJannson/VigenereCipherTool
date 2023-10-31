@@ -60,24 +60,25 @@ public class VigenereDecryptNoKey {
 
         try {
             //BufferReader Declaration
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             //String value for current line
             String line;
             //Loop through the file
-            while ((line = reader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 //Compare the current line with c1 - c2
                 String newWord = charArrayToString(intArrayToCharArray(compare(line)));
 
                 //Check if newWord is located in the file
                 if (Files.lines(Paths.get(file)).anyMatch(innerLine -> innerLine.contains(newWord))) {
                     //If newWord return this message along with the key
-                    System.out.println("Success!!! " + newWord + " is in the key is: " + charArrayToString(intArrayToCharArray(compare(newWord))));
+                    System.out.println("Success!!! " + newWord + " is in the file!!!");
+                    System.out.println("The Key is: " + generateKey(newWord, c1));
                     // End the program
                     System.exit(0);
                 }
             }
 
-            reader.close();
+            bufferedReader.close();
             //Check for an IOException
         } catch (IOException e) {
             //Print out 'IOException caught'
@@ -89,6 +90,53 @@ public class VigenereDecryptNoKey {
             System.out.println("END");
         }
 
+
+    }
+
+    /**
+     *
+     * Generate the key by taking away the value of the ciphertext from the plaintext
+     *
+     * @param p1, plaintext1
+     * @param c1, ciphertext1
+     * @return outputArray
+     */
+
+
+    public String generateKey(String p1, String c1){
+
+        //ArrayList to store int values of p1
+        ArrayList<Integer> p1IntArray = stringToIntegerArray(p1);
+        //ArrayList to store int values of c1
+        ArrayList<Integer> c1IntArray = stringToIntegerArray(c1);
+
+        //ArrayList to hold the key in int form
+        ArrayList<Integer> outputArray = new ArrayList<>();
+
+        //Loop through word size (Default array length of 10 for this requirement)
+        for(int i = 0; i < 10; i++){
+
+            //Take away ciphertext1 from plaintext1
+            int newCharacter =  c1IntArray.get(i) - p1IntArray.get(i);
+
+
+            //Check if the int value of the letter is valid
+            if (newCharacter >= 26) {
+                //If the int value is above 25 (max val of alphabet) do mod 26
+                newCharacter %= 26;
+            }
+            if (newCharacter < 0) {
+                //If the int value of the character is in the negatives add 26
+                newCharacter += 26;
+            }
+
+            //Add the current int character to the outputArray
+            outputArray.add(newCharacter);
+
+        }
+
+        //Return the string version of outputArray
+        return charArrayToString(intArrayToCharArray(outputArray));
 
     }
 
