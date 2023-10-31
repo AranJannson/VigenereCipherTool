@@ -3,6 +3,8 @@ package org.VigenereCipher;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.IOException;
@@ -25,6 +27,8 @@ public class VigenereDecryptNoKey {
     HashMap<Integer, Character> inverseAlphabet;
     //Alphabet Object
     Alphabet alphabetClass = new Alphabet();
+    //ArrayList to contain c1 - c2
+    ArrayList<Integer> c3;
 
     public VigenereDecryptNoKey() {
 
@@ -32,6 +36,8 @@ public class VigenereDecryptNoKey {
         alphabet = alphabetClass.getAlphabet();
         //Initialise the inverse alphabet
         inverseAlphabet = alphabetClass.getInverseAlphabet();
+
+
     }
 
     /**
@@ -50,40 +56,28 @@ public class VigenereDecryptNoKey {
         String file = "10letterwordslist.txt";
 
         //Array of the difference between c1 and c2
-        ArrayList<Integer> c3 = compare(stringToIntegerArray(c1), stringToIntegerArray(c2));
+        this.c3 = differenceBetweenCiphers(stringToIntegerArray(c1), stringToIntegerArray(c2));
 
         try {
             //BufferReader Declaration
             BufferedReader reader = new BufferedReader(new FileReader(file));
-
             //String value for current line
             String line;
-
             //Loop through the file
             while ((line = reader.readLine()) != null) {
-                //Compare the current line to the difference of c1 - c2
-                ArrayList<Integer> plainText2 = compare(stringToIntegerArray(line), c3);
-                //String for plainText2 output
-                String theWord;
+                //Compare the current line with c1 - c2
+                String newWord = charArrayToString(intArrayToCharArray(compare(line)));
 
-                //plaintext2 as a String
-                theWord = charArrayToString(intArrayToCharArray(plainText2));
-
-                //Check if the word is located in the file
-                if (line.equals(theWord)) {
-                    //If successfully print
-                    System.out.println("Success!!! " + theWord + " is in the file key is: ");
-                    //End the program
+                //Check if newWord is located in the file
+                if (Files.lines(Paths.get(file)).anyMatch(innerLine -> innerLine.contains(newWord))) {
+                    //If newWord return this message along with the key
+                    System.out.println("Success!!! " + newWord + " is in the key is: " + charArrayToString(intArrayToCharArray(compare(newWord))));
+                    // End the program
                     System.exit(0);
-                } else {
-                    //If not found print
-                    System.out.println("Failed: " + theWord + " Is not in the file");
                 }
-
-
             }
 
-
+            reader.close();
             //Check for an IOException
         } catch (IOException e) {
             //Print out 'IOException caught'
@@ -102,33 +96,62 @@ public class VigenereDecryptNoKey {
      * Takes away 2 Arrays of Integers representing letters
      * Returning the difference of the 2 Integer Arrays
      *
+     * @param word, word to compare with c1 - c2
+     * @return outputArray
+     */
+
+    public ArrayList<Integer> compare(String word) {
+
+        //Arraylist with the integer values of the word
+        ArrayList<Integer> wordIntArray = stringToIntegerArray(word);
+        //ArrayList to be returned with the result
+        ArrayList<Integer> outputArray = new ArrayList<>();
+        //ArrayList containing the shift values of c1 - c2
+        ArrayList<Integer> shifts = this.c3;
+        //Loop through word size (Default word length of 10 for this requirement)
+        for (int i = 0; i < 10; i++) {
+            //Shift the current letter
+            int newCharacter = shifts.get(i) + wordIntArray.get(i);
+
+            //Check if the int value of the letter is valid
+            if (newCharacter >= 26) {
+                //If the int value is above 25 (max val of alphabet) do mod 26
+                newCharacter %= 26;
+            }
+            if (newCharacter < 0) {
+                //If the int value of the character is in the negatives add 26
+                newCharacter += 26;
+            }
+
+            //Add the current int character to the outputArray
+            outputArray.add(newCharacter);
+        }
+
+        //Return outputArray
+        return outputArray;
+
+    }
+
+    /**
+     * Get the shift difference between the 2 initial ciphers
+     *
      * @param array1, c1
      * @param array2, c2
      * @return outputArray
      */
 
-    public ArrayList<Integer> compare(ArrayList<Integer> array1, ArrayList<Integer> array2) {
+    public ArrayList<Integer> differenceBetweenCiphers(ArrayList<Integer> array1, ArrayList<Integer> array2) {
         //Initialise array to be returned
         ArrayList<Integer> outputArray = new ArrayList<>();
 
+        //Loop through the size of the array's (Default array length of 10 for this requirement)
         for (int i = 0; i < 10; i++) {
             //Current letter to be fetched from array1
             int firstValue = array1.get(i);
             //Current letter to be fetched from array2
             int secondValue = array2.get(i);
-
             //Current values of array1 and array2 taken away from each other
             int firstMinusSecondVal = (firstValue - secondValue);
-
-            //Check for negative values and out of bounds values
-            if (firstMinusSecondVal < 0) {
-                //If negative add 25
-                firstMinusSecondVal += 26;
-            } else if (firstMinusSecondVal >= 26) {
-                //If bigger than the max alphabet character take away 25
-                firstMinusSecondVal -= 26;
-            }
-
             //Add the value found into an ArrayList outputArray
             outputArray.add(firstMinusSecondVal);
 
