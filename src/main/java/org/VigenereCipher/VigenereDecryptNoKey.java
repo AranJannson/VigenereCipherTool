@@ -61,7 +61,6 @@ public class VigenereDecryptNoKey {
 
             //Loop through the file
             while ((line = reader.readLine()) != null) {
-
                 //Compare the current line to the difference of c1 - c2
                 ArrayList<Integer> plainText2 = compare(stringToIntegerArray(line), c3);
                 //String for plainText2 output
@@ -124,10 +123,10 @@ public class VigenereDecryptNoKey {
             //Check for negative values and out of bounds values
             if (firstMinusSecondVal < 0) {
                 //If negative add 25
-                firstMinusSecondVal += 25;
+                firstMinusSecondVal += 26;
             } else if (firstMinusSecondVal >= 26) {
                 //If bigger than the max alphabet character take away 25
-                firstMinusSecondVal -= 25;
+                firstMinusSecondVal -= 26;
             }
 
             //Add the value found into an ArrayList outputArray
