@@ -63,6 +63,9 @@ public class VigenereDecryptNoKey {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             //String value for current line
             String line;
+
+            System.out.println("Processing...");
+
             //Loop through the file
             while ((line = bufferedReader.readLine()) != null) {
                 //Compare the current line with c1 - c2
@@ -94,7 +97,6 @@ public class VigenereDecryptNoKey {
     }
 
     /**
-     *
      * Generate the key by taking away the value of the ciphertext from the plaintext
      *
      * @param p1, plaintext1
@@ -103,7 +105,7 @@ public class VigenereDecryptNoKey {
      */
 
 
-    public String generateKey(String p1, String c1){
+    public String generateKey(String p1, String c1) {
 
         //ArrayList to store int values of p1
         ArrayList<Integer> p1IntArray = stringToIntegerArray(p1);
@@ -114,10 +116,10 @@ public class VigenereDecryptNoKey {
         ArrayList<Integer> outputArray = new ArrayList<>();
 
         //Loop through word size (Default array length of 10 for this requirement)
-        for(int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
 
             //Take away ciphertext1 from plaintext1
-            int newCharacter =  c1IntArray.get(i) - p1IntArray.get(i);
+            int newCharacter = c1IntArray.get(i) - p1IntArray.get(i);
 
 
             //Check if the int value of the letter is valid
