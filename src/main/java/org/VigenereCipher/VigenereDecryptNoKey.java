@@ -69,7 +69,7 @@ public class VigenereDecryptNoKey {
             //Loop through the file
             while ((line = bufferedReader.readLine()) != null) {
                 //Compare the current line with c1 - c2
-                String newWord = charArrayToString(intArrayToCharArray(compare(line)));
+                String newWord = charArrayToString(intArrayToCharArray(shift(line)));
 
                 //Check if newWord is located in the file
                 if (Files.lines(Paths.get(file)).anyMatch(innerLine -> innerLine.contains(newWord))) {
@@ -150,7 +150,7 @@ public class VigenereDecryptNoKey {
      * @return outputArray
      */
 
-    public ArrayList<Integer> compare(String word) {
+    public ArrayList<Integer> shift(String word) {
 
         //Arraylist with the integer values of the word
         ArrayList<Integer> wordIntArray = stringToIntegerArray(word);
