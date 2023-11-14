@@ -99,16 +99,16 @@ public class VigenereDecryptNoKey {
     /**
      * Generate the key by taking away the value of the ciphertext from the plaintext
      *
-     * @param p1, plaintext1
+     * @param w1, plaintext1
      * @param c1, ciphertext1
      * @return outputArray
      */
 
 
-    public String generateKey(String p1, String c1) {
+    public String generateKey(String w1, String c1) {
 
-        //ArrayList to store int values of p1
-        ArrayList<Integer> p1IntArray = stringToIntegerArray(p1);
+        //ArrayList to store int values of w1
+        ArrayList<Integer> w1IntArray = stringToIntegerArray(w1);
         //ArrayList to store int values of c1
         ArrayList<Integer> c1IntArray = stringToIntegerArray(c1);
 
@@ -119,7 +119,7 @@ public class VigenereDecryptNoKey {
         for (int i = 0; i < 10; i++) {
 
             //Take away ciphertext1 from plaintext1
-            int newCharacter = c1IntArray.get(i) - p1IntArray.get(i);
+            int newCharacter = c1IntArray.get(i) - w1IntArray.get(i);
 
 
             //Check if the int value of the letter is valid
